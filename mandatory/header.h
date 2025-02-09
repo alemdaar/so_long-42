@@ -3,33 +3,35 @@
 
 #define TRUE 1
 #define FALSE 0
+#define FAILED 1
+#define SUCCEFULL 0
 
 typedef struct s_indexes {
 	int	i;
 	int	j;
-	int	k;
 	int	c;
-	int	r;
-	int	f;
-}	t_indexes;
+	int	p;
+	int	e;
 
-typedef struct s_first_last {
-	int	first;
-	int	last;
-}	t_first_last;
+}	t_indexes;
 
 typedef struct s_file {
 	char	*file_name;
+	char	*file_name_copy;
 	int		fd;
 	char	*current_gnl;
-	char	*previous_gnl;
-	char	*next_gnl;
 	int		line_chars;
 	int		count_lines;
-	int		count_lines_tmp;
 	int		total_count;
 	int		helper;
+
 }	t_file;
+
+typedef struct s_map {
+	char **map;
+	char **tmp_map;
+	
+}	t_map;
 
 
 
@@ -38,8 +40,6 @@ typedef struct s_file {
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
-
-int mystrlen(char *str);
 
 
 # endif
