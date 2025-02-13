@@ -1,27 +1,40 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <mlx.h>
 
-int main (char **av)
+#define TILE_SIZE 0
+
+int main()
 {
-	char *text = "file.txt";
-	char str[5];
-	char str2[5];
+    void *mlx;
+    void *win;
+    void *img;
+    int img_width, img_height;
+    img_width = 0;
+    img_height = 0;
+    int map[10][10] = { /* Example Map */ 
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 1, 1, 0, 0, 0, 0, 1, 1},
+                        {1, 0, 1, 0, 0, 1, 1, 0, 0, 1},
+                        {1, 0, 1, 1, 0, 0, 1, 1, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+                     };
 
-	int fd = open (text, O_RDONLY);
-	ssize_t r = read (fd, str, 6);
-	str[r] = '\0';
-	printf ("str : %s\n", str);
-	close (fd);
-	int fd2 = open (text, O_RDONLY);
-	printf ("fd2 : %d\n", fd2);
-	// if (fd2 == -1) {
-	// 	printf ("hahahahhhahahahahaha\n");
-	// 	return 1;
-	// }
-	ssize_t rr = read (fd2, str2, 6);
-	str2[rr] = '\0';
-	printf ("str2 : %s\n", str2);
-	printf ("r : %zd\n", r);
-	printf ("rr : %zd\n", rr);
+    mlx = mlx_init();
+    win = mlx_new_window(mlx, 1000, 900, "test1 - 0");
+
+    img = mlx_xpm_file_to_image(mlx, "enemy.xpm", &img_width, &img_height);
+
+    for (int y = 0; y < 7; y++)
+    {
+        for (int x = 0; x < 10; x++)
+        {
+            if (map[y][x] == 1)  // Example: 1 is a wall, 0 is empty space
+                mlx_put_image_to_window(mlx, win, img, x * TILE_SIZE, y * TILE_SIZE);
+        }
+    }
+
+    mlx_loop(mlx);
+    return (0);
 }
+

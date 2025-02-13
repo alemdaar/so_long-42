@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/09 17:34:21 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:09:17 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ void find_extention(char *str, char *word)
 	return ;
 }
 
-int	map_name(t_file dafile)
+int	map_name(char *input_name)
 {
 	t_indexes index;
 
-	if (ft_strlen(dafile.file_name) <= ft_strlen(".ber"))
+	if (mystrlen(input_name) <= mystrlen(".ber"))
 		return (FALSE);
 	index.i = 0;
-	while (index.i < ft_strlen(dafile.file_name))
+	while (index.i < mystrlen(input_name))
 	{
-		if (dafile.file_name[index.i] == '.')
-			find_extention(dafile.file_name, ".ber");
+		if (input_name[index.i] == '.')
+			find_extention(input_name, ".ber");
 		index.i++;
 	}
 	return (TRUE);
@@ -91,7 +91,8 @@ char	*remove_nl(char *current_gnl)
 	int i;
 
 	i = 0;
-	new = (char *) malloc (sizeof (char) * mystrlen(current_gnl));
+	new = (char *) malloc (sizeof (char) * mystrlen(current_gnl) + 1);
+	// while (current_gnl[i])
 	while (current_gnl[i])
 	{
 		new[i] = current_gnl[i];
@@ -134,6 +135,7 @@ void count_lines(t_file *dafile)
 		}
 		else
 			check_lines(dafile->current_gnl, dafile->line_chars);
+		// free current
 		dafile->total_count += dafile->line_chars;
 		dafile->count_lines ++;
 	}
@@ -165,6 +167,7 @@ int line_is_1 (char *line)
 
 int map_symbols(char symbol)
 {
+	if (symbol == '1')
 		return (SUCCEFULL);
 	if (symbol == '0')
 		return (SUCCEFULL);
@@ -184,7 +187,7 @@ void check_center_walls(char *line, int count)
 	index.i = 0;
 	while (line[index.i])
 	{
-		if (index.i == 0 || index.i == line[index.i])
+		if (index.i == 0 || index.i == count - 1)
 		{
 			if (line[index.i] != '1') {
 				printf ("center no wall !\n");
@@ -296,14 +299,8 @@ void	make_map(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
-	dafile.fd = open_fd(dafile.file_name);
-	maps->map = (char **) malloc (sizeof(char *) * dafile.count_lines);
-	if (!maps->map) {
-		printf ("map didnt allocated proparly !\n");
-		exit(FAILED);
-	}
+	dafile.fd = open_fd(dafile.file_name);	
 	index.i = 0;
-	index.i = FALSE;
 	while (index.i < dafile.count_lines)
 	{
 		maps->map[index.i] = (char *) malloc (sizeof(char) * dafile.line_chars + 1);
@@ -312,7 +309,6 @@ void	make_map(t_map *maps, t_file dafile)
 			exit (FAILED);
 		}
 		maps->map[index.i] = get_next_line(dafile.fd);
-		printf ("get : %s\n", maps->map[index.i]);
 		if (!maps->map[index.i] && index.c == FALSE) {
 			free_str2(maps->map, index.i);
 			printf ("get next line returns NULL to map\n");
@@ -323,7 +319,8 @@ void	make_map(t_map *maps, t_file dafile)
 		index.i ++;
 	}
 	close (dafile.fd);
-	dafile.fd = 0;
+	free (dafile.file_name);
+	free (dafile.file_name_copy);
 	return ;
 }
 
@@ -445,44 +442,32 @@ void can_reach(t_map maps, t_file dafile)
 	}
 }
 
-t_map *correct_map(t_file *dafile)
+void correct_map(t_file *dafile, t_map **maps)
 {
-	t_map *maps;
-
-	count_lines(dafile);
-	printf ("......\n");
-	make_map(maps, *dafile);
-	copy_map(maps, *dafile);
-	check_map(*maps, *dafile);
-	// int i = 0;
-	// while (i < dafile->count_lines)
-	// 	printf ("map line 1 : %s\n", maps->map[i++]);
-	check_elements(*maps, *dafile);
-	fill_map(*maps, *dafile);
-	can_reach(*maps, *dafile);
-	return (maps);
-}
-
-void	correct_map_file(t_file *dafile, t_map **maps)
-{
-	*maps = (t_map *) malloc (sizeof(t_map));
-	if (!*maps)
+	(*maps)->map = (char **) malloc (sizeof(char *) * dafile->count_lines);
+	if (!(*maps)->map) {
+		printf ("map didnt allocated proparly !\n");
 		exit(FAILED);
-	if (map_name(*dafile) == FALSE)
-		exit(FALSE);
-	*maps = correct_map(dafile);
-	printf ("parsed perfectly \n");
+	}
+	count_lines(dafile);
+	make_map(*maps, *dafile);
+	copy_map(*maps, *dafile);
+	check_map(**maps, *dafile);
+	check_elements(**maps, *dafile);
+	fill_map(**maps, *dafile);
+	can_reach(**maps, *dafile);
 	return ;
 }
+
 
 void intial_filename(char **file_name, char *av)
 {
 	int i;
 
 	i = 0;
-	*file_name = (char *) malloc (sizeof(char) * mystrlen(av) + 1);
-	if (!*file_name)
-		exit(FAILED);
+	// char *file_path;
+	// file_path = "maps/maps.ber";
+
 	while (av[i])
 	{
 		file_name[0][i] = av[i];
@@ -491,27 +476,89 @@ void intial_filename(char **file_name, char *av)
 	file_name[0][i] = 0;
 }
 
+void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
+{
+	char		*path;
+	t_indexes	index;
+
+	if (map_name(input_name) == FALSE)
+		exit(FALSE);
+	path = "mandatory/maps/";
+	index.i = 0;
+	index.k = 0;
+	dafile->file_name = (char *) malloc (sizeof(char) * (mystrlen(path) + mystrlen(input_name) + 1));
+	while (path[index.i])
+		dafile->file_name[index.k++] = path[index.i++];
+	index.i = 0;
+	while (input_name[index.i])
+		dafile->file_name[index.k++] = input_name[index.i++];
+	dafile->file_name[index.k] = 0;
+	correct_map(dafile, maps);
+	printf ("parsed perfectly \n");
+	return ;
+}
+
 int main (int ac, char **av)
 {
 	t_file		dafile;
 	t_indexes	index;
 	t_map		*maps;
+	void *mlx;
+    void *win;
+    void *wall_img;
+    void *empty_img;
+    int img_width, img_height;
 
 	if (ac != 2)
 		return (0);
-	intial_filename(&dafile.file_name, av[1]);
-	intial_filename(&dafile.file_name_copy, av[1]);
-	correct_map_file(&dafile, &maps);
-	index.i = 0;
-	index.j = 0;
-	while (index.i < dafile.count_lines)
-	{ 
-		index.j = 0;
-		while (index.j < dafile.line_chars)
-			printf ("%c ", maps->map[index.i][index.j++]);
-		printf ("\n");
-		index.i++;
-	}
-	printf ("\n\n");
+	maps = (t_map *) malloc (sizeof(t_map));
+	if (!maps)
+		exit(FAILED);
+	correct_map_file(av[1], &maps, &dafile);
+	// index.i = 0;
+	// index.j = 0;
+	// while (index.i < dafile.count_lines)
+	// { 
+	// 	index.j = 0;
+	// 	while (index.j < dafile.line_chars)
+	// 		printf ("%c ", maps->map[index.i][index.j++]);
+	// 	printf ("\n");
+	// 	index.i++;
+	// }
+	// printf ("\n\n");
+	
+	// // printf (".....\n");
+    // // Initialize mlx and create window
+    mlx = mlx_init();
+	printf ("....\n");
+	printf ("mlx : %p\n", mlx);
+	if (!mlx)
+		exit(FAILED);
+    win = mlx_new_window(mlx, 1000, 400, "So_Long");
+	printf ("win : %p\n", win);
+	if (!win)
+		exit(FAILED);
+    // Load wall and empty space images
+    wall_img = mlx_xpm_file_to_image(mlx, "picss/wall.xpm", &img_width, &img_height);
+    empty_img = mlx_xpm_file_to_image(mlx, "picss/player.xpm", &img_width, &img_height);
+
+    // for (int y = 0; y < 20; y++) {
+    //     for (int x = 0; x < 32; x++) {
+    //         if (map[y][x] == 1) {
+    //             // Draw wall
+    mlx_put_image_to_window(mlx, win, wall_img, 0, 0);
+            // } else {
+            //     // Draw empty space
+    mlx_put_image_to_window(mlx, win, empty_img, 40, 0);
+    //         }
+    //     }
+    // }
+	
+
+    // Start the event loop
+    mlx_loop(mlx);
+
+    return (0);
 }
-// line :
+
+// get next line failed

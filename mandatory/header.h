@@ -1,6 +1,8 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+#include <mlx.h>
+
 #define TRUE 1
 #define FALSE 0
 #define FAILED 1
@@ -9,6 +11,7 @@
 typedef struct s_indexes {
 	int	i;
 	int	j;
+	int	k;
 	int	c;
 	int	p;
 	int	e;
