@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   tools_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:29:41 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 20:14:30 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:44:16 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "../header_bonus.h"
 
 int	mystrlen(char *str)
 {
@@ -62,6 +62,8 @@ int	map_symbols(char symbol)
 	if (symbol == 'C')
 		return (SUCCEFULL);
 	if (symbol == 'E')
+		return (SUCCEFULL);
+	if (symbol == 'N')
 		return (SUCCEFULL);
 	return (FAILED);
 }

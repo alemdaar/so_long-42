@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parcing3.c                                         :+:      :+:    :+:   */
+/*   parcing3_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:54:38 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:51:18 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "../header_bonus.h"
 
-void	check_elements(t_map maps, t_file dafile)
+void	check_elements(t_map maps, t_file dafile, t_enemy *enemy)
 {
 	t_indexes	index;
 
@@ -20,17 +20,20 @@ void	check_elements(t_map maps, t_file dafile)
 	index.c = 0;
 	index.p = 0;
 	index.e = 0;
+	index.n = 0;
 	while (index.i < dafile.count_lines)
 	{
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.map[index.i][index.j] == 'C')
+			if (maps.map[index.i][index.j] == COLLECT)
 				index.c ++;
-			else if (maps.map[index.i][index.j] == 'P')
+			else if (maps.map[index.i][index.j] == PLAYER)
 				index.p ++;
-			else if (maps.map[index.i][index.j] == 'E')
+			else if (maps.map[index.i][index.j] == EXIT)
 				index.e ++;
+			else if (maps.map[index.i][index.j] == ENEMY)
+				handle_enemy(enemy, maps, &index);
 			index.j ++;
 		}
 		index.i ++;

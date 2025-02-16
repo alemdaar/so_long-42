@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   header_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:25:20 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:46:52 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
-# define HEADER_H
+#ifndef HEADER_BONUS_H
+# define HEADER_BONUS_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -40,6 +40,7 @@
 # define COLLECT 67
 # define EXIT 69
 # define PLAYER 80
+# define ENEMY 78
 // EXIT_KEY
 # define ESC_KEY 53
 
@@ -50,6 +51,7 @@ typedef struct s_indexes {
 	int	c;
 	int	p;
 	int	e;
+	int	n;
 
 }	t_indexes;
 
@@ -86,6 +88,13 @@ typedef struct game {
 	int		collects;
 	int		move;
 }	t_game;
+
+typedef struct enemy {
+	int	*pos_x;
+	int	*pos_y;
+	int	count;
+	
+}	t_enemy;
 
 // parcing part
 // parcing1

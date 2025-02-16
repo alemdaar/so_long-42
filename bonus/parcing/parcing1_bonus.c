@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parcing1.c                                         :+:      :+:    :+:   */
+/*   parcing1_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:17 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 21:36:07 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:42:55 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "../header_bonus.h"
 
-void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
+void	correct_map_file(char *input_name, t_map **maps, t_file *dafile, t_enemy *enemy)
 {
 	char		*path;
 	t_indexes	index;
@@ -31,12 +31,15 @@ void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 	while (input_name[index.i])
 		dafile->file_name[index.k++] = input_name[index.i++];
 	dafile->file_name[index.k] = 0;
-	correct_map(dafile, maps);
+	correct_map(dafile, maps, enemy);
 	return ;
 }
 
-void	correct_map(t_file *dafile, t_map **maps)
+void	correct_map(t_file *dafile, t_map **maps, t_enemy *enemy)
 {
+	enemy = malloc (sizeof(t_enemy));
+	if (!enemy)
+		why_exit("enemy not allocated\n", FAILED);
 	count_lines(dafile);
 	(*maps)->map = (char **) malloc (sizeof(char *) * dafile->count_lines);
 	if (!(*maps)->map)

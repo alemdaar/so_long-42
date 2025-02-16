@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parcing2.c                                         :+:      :+:    :+:   */
+/*   parcing2_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 20:10:11 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:55:02 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "../header_bonus.h"
 
 int	make_map(t_map *maps, t_file dafile)
 {
@@ -67,7 +67,7 @@ void	copy_map(t_map *maps, t_file dafile)
 	}
 }
 
-void	check_map(t_map maps, t_file dafile)
+void	check_map(t_map maps, t_file dafile, )
 {
 	t_indexes	index;
 

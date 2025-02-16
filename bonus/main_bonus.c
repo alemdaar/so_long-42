@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 19:42:00 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:38:16 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "header_bonus.h"
 
 int	close_window(t_game *game)
 {
@@ -38,13 +38,14 @@ int	main(int ac, char **av)
 	t_file		dafile;
 	t_map		*maps;
 	t_game		game;
+	t_enemy		*enemy;
 
 	if (ac != 2)
 		return (FAILED);
 	maps = (t_map *) malloc (sizeof(t_map));
 	if (!maps)
 		why_exit("map struct not allocated !\n", FAILED);
-	correct_map_file(av[1], &maps, &dafile);
+	correct_map_file(av[1], &maps, &dafile, &enemy);
 	game.map = maps->map;
 	maps->map = NULL;
 	game.count_lines = dafile.count_lines;
