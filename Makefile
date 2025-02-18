@@ -2,7 +2,8 @@ NAME = so_long
 
 NAME_BONUS = so_long_bonus
 
-CC = cc 
+CC = cc -g
+
 
 SRC = mandatory/main.c mandatory/parcing/parcing1.c mandatory/parcing/parcing2.c \
 	mandatory/parcing/parcing3.c mandatory/parcing/tools.c mandatory/parcing/map_name.c \
@@ -43,3 +44,4 @@ clean :
 fclean : clean
 	@rm -f ${NAME} ${NAME_BONUS}
 re : fclean all
+rebonus: fclean bonus

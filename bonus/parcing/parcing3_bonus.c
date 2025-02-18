@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 11:54:03 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:10:28 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,18 @@ void	check_elements(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.map[index.i][index.j] == 'C')
+			if (maps.map[index.i][index.j] == COLLECT)
 				index.c ++;
-			else if (maps.map[index.i][index.j] == 'P')
+			else if (maps.map[index.i][index.j] == PLAYER)
 				index.p ++;
-			else if (maps.map[index.i][index.j] == 'E')
+			else if (maps.map[index.i][index.j] == EXIT)
 				index.e ++;
-			else if (maps.map[index.i][index.j] == 'N')
+			else if (maps.map[index.i][index.j] == ENEMY)
 				index.n ++;
 			index.j ++;
 		}
 		index.i ++;
 	}
-	printf ("c : %d\n", index.c);
-	printf ("p : %d\n", index.p);
-	printf ("e : %d\n", index.e);
-	printf ("n : %d\n", index.n);
 	check_elements2(index, maps, dafile);
 }
 
@@ -75,7 +71,7 @@ void	fill_map(t_map maps, t_file dafile)
 		index.j = 0;
 		while (maps.map[index.i][index.j])
 		{
-			if (maps.map[index.i][index.j] == 'P')
+			if (maps.map[index.i][index.j] == PLAYER)
 			{
 				flood_fill(maps, dafile, index.i, index.j);
 				return ;
@@ -117,8 +113,8 @@ void	can_reach(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.tmp_map[index.i][index.j] == 'C'
-				|| maps.tmp_map[index.i][index.j] == 'E')
+			if (maps.tmp_map[index.i][index.j] == COLLECT
+				|| maps.tmp_map[index.i][index.j] == EXIT)
 			{
 				free_maps(&maps, dafile.count_lines);
 				free_maps_c(&maps, dafile.count_lines);

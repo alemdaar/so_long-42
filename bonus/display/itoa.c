@@ -6,25 +6,27 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 22:09:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/17 22:18:15 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:35:00 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header_bonus.h"
 
-static	char *mycalloc(int size)
-{
-	int		i;
-	char	*str;
+// static	int	alloc(char **str)
+// {
+// 	int		i;
 
-	str = malloc (size);
-	if (!str)
-		return(NULL);
-	i = 0;
-	while (i < 12)
-		str[i++] = 0;
-	return (str);
-}
+// 	*str = (char *) malloc (sizeof(char) * 12);
+// 	if (!*str)
+// 		return (FAILED);
+// 	i = 0;
+// 	while (i < 12)
+// 	{
+// 		str[0][i] = '\0';
+// 		i++;
+// 	}
+// 	return (SUCCEFULL);
+// }
 
 static	int	len_count(int n)
 {
@@ -43,13 +45,16 @@ static	int	len_count(int n)
 
 char	*myitoa(int n)
 {
-	char	*str;
-	int		len;
+	char		*str;
+	t_indexes	index;
 
-	len = len_count(n);
-	str = mycalloc(12);
+	index.i = len_count(n);
+	index.j = 0;
+	str = (char *) malloc (sizeof(char) * 12);
 	if (!str)
 		return (NULL);
+	while (index.j < 12)
+		str[index.j++] = 0;
 	if (n == 0)
 		str[0] = '0';
 	if (n < 0)
@@ -57,14 +62,14 @@ char	*myitoa(int n)
 		str[0] = '-';
 		if (n == -2147483648)
 		{
-			str[--len] = '8';
+			str[--index.i] = '8';
 			n /= 10;
 		}
 		n = -n;
 	}
-	while (len-- && n)
+	while (index.i-- && n)
 	{
-		str[len] = (n % 10) + 48;
+		str[index.i] = (n % 10) + 48;
 		n /= 10;
 	}
 	return (str);

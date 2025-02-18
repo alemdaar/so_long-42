@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/17 22:30:51 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:27:55 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	check_elements(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.map[index.i][index.j] == 'C')
+			if (maps.map[index.i][index.j] == COLLECT)
 				index.c ++;
-			else if (maps.map[index.i][index.j] == 'P')
+			else if (maps.map[index.i][index.j] == PLAYER)
 				index.p ++;
-			else if (maps.map[index.i][index.j] == 'E')
+			else if (maps.map[index.i][index.j] == EXIT)
 				index.e ++;
 			index.j ++;
 		}
@@ -78,7 +78,7 @@ void	fill_map(t_map maps, t_file dafile)
 		index.j = 0;
 		while (maps.map[index.i][index.j])
 		{
-			if (maps.map[index.i][index.j] == 'P')
+			if (maps.map[index.i][index.j] == PLAYER)
 			{
 				flood_fill(maps, dafile, index.i, index.j);
 				return ;
@@ -93,15 +93,15 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex)
 {
 	if (daline < 1 || daline > dafile.line_chars || daindex < 1
 		|| daindex > dafile.line_chars
-		|| maps.tmp_map[daline][daindex] == '1')
+		|| maps.tmp_map[daline][daindex] == WALL)
 		return ;
-	if (maps.tmp_map[daline][daindex] == 'E')
+	if (maps.tmp_map[daline][daindex] == EXIT)
 	{
 		maps.tmp_map[daline][daindex] = 'X';
 		return ;
 	}
 	if (maps.tmp_map[daline][daindex] != 'X')
-		maps.tmp_map[daline][daindex] = '1';
+		maps.tmp_map[daline][daindex] = WALL;
 	flood_fill(maps, dafile, daline + 1, daindex);
 	flood_fill(maps, dafile, daline - 1, daindex);
 	flood_fill(maps, dafile, daline, daindex + 1);
@@ -119,8 +119,8 @@ void	can_reach(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.tmp_map[index.i][index.j] == 'C'
-				|| maps.tmp_map[index.i][index.j] == 'E')
+			if (maps.tmp_map[index.i][index.j] == COLLECT
+				|| maps.tmp_map[index.i][index.j] == EXIT)
 			{
 				free_maps(&maps, dafile.count_lines);
 				free_maps_c(&maps, dafile.count_lines);

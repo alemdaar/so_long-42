@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 11:25:27 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:18:57 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	close_window(t_game *game)
 {
 	free_mlx(game);
+	// while (1);
+	system("leaks so_long_bonus");
 	exit(SUCCEFULL);
 }
 
@@ -33,6 +35,22 @@ static int	key_hook(int keycode, t_game *game)
 	return (0);
 }
 
+static void protect_it(t_game *game)
+{
+	game->mlx = NULL;
+	game->win = NULL;
+	game->wall_img = NULL;
+	game->empty_img = NULL;
+	game->player_img = NULL;
+	game->coin_img = NULL;
+	game->exit_img = NULL;
+	game->enemy_img = NULL;
+	game->enemy2_img = NULL;
+	game->move = NULL;
+	game->count_move = NULL;
+	game->enemy = NULL;
+}
+
 int	main(int ac, char **av)
 {
 	t_file		dafile;
@@ -46,15 +64,18 @@ int	main(int ac, char **av)
 		why_exit("map struct not allocated !\n", FAILED);
 	correct_map_file(av[1], &maps, &dafile);
 	game.map = maps->map;
-	maps->map = NULL;
 	game.count_lines = dafile.count_lines;
+	protect_it(&game);
 	game.mlx = mlx_init();
 	if (!game.mlx)
-		why_exit("mlx allocation failed !\n", FAILED);
+		return (free_mlx(&game), why_exit("mlx allocation failed !\n", FAILED), FAILED);
 	set_up(&game, dafile);
+	// printf ("....\n");
 	draw_map(&game);
+	printf (".....\n");
 	mlx_hook(game.win, 2, 0, key_hook, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);
+	
 	return (SUCCEFULL);
 }

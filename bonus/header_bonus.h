@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 11:42:19 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:08:18 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define COLLECT 67
 # define EXIT 69
 # define PLAYER 80
-# define ENEMY 7
+# define ENEMY 78
 // EXIT_KEY
 # define ESC_KEY 53
 
@@ -96,7 +96,7 @@ typedef struct game {
 
 // parcing part
 // parcing1
-void	correct_map_file(char *input_name, t_map **maps, t_file *dafile);
+int		correct_map_file(char *input_name, t_map **maps, t_file *dafile);
 void	correct_map(t_file *dafile, t_map **maps);
 void	count_lines(t_file *dafile);
 int		count_lines_p2(t_file *dafile);
@@ -130,7 +130,7 @@ void	why_exit(char *str, int operation);
 
 // game part
 // setup
-void	set_up(t_game	*game, t_file dafile);
+int		set_up(t_game	*game, t_file dafile);
 int		find_player(t_game *game);
 void	calculate_collect(t_game *game);
 // draw map
@@ -140,7 +140,7 @@ int		last_move(t_game *game, int x, int y);
 // display
 void	myputchar(char c);
 void	myputstr(char *str);
-char	*change_str(char *str, int nb);
+void	change_str(t_game *game);
 char	*myitoa(int n);
 // itoa
 char	*myitoa(int n);

@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/17 16:38:13 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:27:13 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	line_is_1(char *line)
 	index.i = 0;
 	while (line[index.i])
 	{
-		if (line[index.i] != '1')
+		if (line[index.i] != WALL)
 			return (FAILED);
 		index.i ++;
 	}
@@ -112,7 +112,7 @@ void	checkcen(char *line, int count, t_map maps, t_file dafile)
 	{
 		if (index.i == 0 || index.i == count - 1)
 		{
-			if (line[index.i] != '1')
+			if (line[index.i] != WALL)
 			{
 				free_maps(&maps, dafile.count_lines);
 				free_maps_c(&maps, dafile.count_lines);

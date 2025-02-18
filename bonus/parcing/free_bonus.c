@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:41:05 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:27:50 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:36:21 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ void	free_maps_c(t_map *maps, int last)
 	maps->tmp_map = NULL;
 }
 
+static	void	free_mlx2(t_game *game)
+{
+	printf ("free\n");
+	if (game->move)
+		free(game->move);
+}
+
 void	free_mlx(t_game *game)
 {
 	int	i;
@@ -58,12 +65,19 @@ void	free_mlx(t_game *game)
 	}
 	free(game->map);
 	game->map = NULL;
-	mlx_destroy_image(game->mlx, game->wall_img);
-	mlx_destroy_image(game->mlx, game->coin_img);
-	mlx_destroy_image(game->mlx, game->player_img);
-	mlx_destroy_image(game->mlx, game->empty_img);
-	mlx_destroy_image(game->mlx, game->exit_img);
-	mlx_destroy_window(game->mlx, game->win);
+	if (game->wall_img)
+		mlx_destroy_image(game->mlx, game->wall_img);
+	if (game->coin_img)
+		mlx_destroy_image(game->mlx, game->coin_img);
+	if (game->player_img)
+		mlx_destroy_image(game->mlx, game->player_img);
+	if (game->empty_img)
+		mlx_destroy_image(game->mlx, game->empty_img);
+	if (game->exit_img)
+		mlx_destroy_image(game->mlx, game->exit_img);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	free_mlx2(game);
 	free(game->mlx);
 }
 

@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 10:55:54 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:04:53 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <mlx.h>
+# include <stdio.h>
 # include "../get_next_line/get_next_line.h"
 // RULES
 # define TRUE 1
@@ -89,11 +90,11 @@ typedef struct game {
 
 // parcing part
 // parcing1
-void	correct_map_file(char *input_name, t_map **maps, t_file *dafile);
+int		correct_map_file(char *input_name, t_map **maps, t_file *dafile);
 void	correct_map(t_file *dafile, t_map **maps);
-void	count_lines(t_file *dafile);
-int		count_lines_p2(t_file *dafile);
-void	check_lines(char *str, int first_count);
+int		count_lines(t_file *dafile, t_map **maps);
+int		count_lines_p2(t_file *dafile, t_map **maps);
+int		check_lines(char *str, int first_count, t_map **maps);
 // parcing2
 int		make_map(t_map *maps, t_file dafile);
 void	copy_map(t_map *maps, t_file dafile);

@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:00:20 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 13:23:35 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:27:25 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ void	myputnbr(int n)
 		myputnbr(n % 10);
 	}
 	else
-		myputchar('0' + n);
+		myputchar(EMPTY + n);
 }

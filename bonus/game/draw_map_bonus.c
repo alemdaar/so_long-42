@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:24:08 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 11:38:25 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:31:28 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ void	draw_map(t_game *game)
 		}
 		index.i++;
 	}
+	printf ("1\n");
 	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, "move : ");
 	mlx_string_put(game->mlx, game->win, 100, 10, 0xFFFFFF, game->move);
+	printf ("2\n");
 }
 
 int	last_move(t_game *game, int x, int y)
@@ -82,20 +84,27 @@ void	moveplayer(t_game *game, int x, int y)
 {
 	if (game->map[game->player_posy + y][game->player_posx + x] == WALL)
 		return ;
+	if (game->map[game->player_posy + y][game->player_posx + x] == ENEMY)
+	{
+		myputstr("game over !\n");
+		close_window(game);
+	}
 	if (game->map[game->player_posy + y][game->player_posx + x] == EXIT)
 	{
 		if (game->collects > 0)
 			return ;
 	}
 	if (last_move(game, x, y) == TRUE)
+	{
+		myputstr("you won !\n");
 		close_window(game);
+	}
 	if (game->map[game->player_posy + y][game->player_posx + x] == COLLECT)
 		game->collects --;
 	game->map[game->player_posy][game->player_posx] = EMPTY;
 	game->player_posx += x;
 	game->player_posy += y;
 	game->map[game->player_posy][game->player_posx] = PLAYER;
-	game->count_move ++;
-	change_str(game->move, game->count_lines);
+	change_str(game);
 	draw_map(game);
 }

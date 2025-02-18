@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:17 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 11:52:28 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:15:26 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 	t_indexes	index;
 
 	if (map_name(input_name) == FALSE)
-		why_exit("map name isnt correct\n", FAILED);
-	path = "mandatory/maps/";
+		return (why_exit("map name isnt correct\n", FAILED), FAILED);
+	path = "maps/";
 	index.i = 0;
 	index.k = 0;
 	dafile->file_name = malloc (sizeof(char) * (15 + mystrlen(input_name) + 1));
@@ -32,7 +32,7 @@ void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 		dafile->file_name[index.k++] = input_name[index.i++];
 	dafile->file_name[index.k] = 0;
 	correct_map(dafile, maps);
-	return ;
+	return (SUCCEFULL);
 }
 
 void	correct_map(t_file *dafile, t_map **maps)
@@ -42,9 +42,6 @@ void	correct_map(t_file *dafile, t_map **maps)
 	if (!(*maps)->map)
 		why_exit("map ** not allocated\n", FAILED);
 	make_map(*maps, *dafile);
-	printf ("line 1 : %s\n", (*maps)->map[0]);
-	printf ("line 1 : %s\n", (*maps)->map[1]);
-	printf ("line 1 : %s\n", (*maps)->map[2]);
 	copy_map(*maps, *dafile);
 	check_map(**maps, *dafile);
 	check_elements(**maps, *dafile);
@@ -75,7 +72,6 @@ void	count_lines(t_file *dafile)
 int	count_lines_p2(t_file *dafile)
 {
 	dafile->current_gnl = get_next_line(dafile->fd);
-	printf ("gnl : %s\n", dafile->current_gnl);
 	if (!dafile->current_gnl && dafile->helper == 0)
 		why_exit("get next line failed to read\n", FAILED);
 	if (!dafile->current_gnl && dafile->helper)

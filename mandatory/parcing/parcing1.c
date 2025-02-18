@@ -6,20 +6,21 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:17 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/17 22:38:13 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 21:49:14 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header.h"
 
-void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
+int	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 {
 	char		*path;
 	t_indexes	index;
 
+	printf ("name : %s\n", input_name);
 	if (map_name(input_name) == FALSE)
-		why_exit("map name isnt correct\n", FAILED);
-	path = "mandatory/maps/";
+		return (free(*maps), why_exit("map name isnt correct\n", FAILED), FAILED);
+	path = "maps/";
 	index.i = 0;
 	index.k = 0;
 	dafile->file_name = malloc (sizeof(char) * (15 + mystrlen(input_name) + 1));
@@ -32,16 +33,13 @@ void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 		dafile->file_name[index.k++] = input_name[index.i++];
 	dafile->file_name[index.k] = 0;
 	correct_map(dafile, maps);
-	return ;
+	return (SUCCEFULL);
 }
 
 void	correct_map(t_file *dafile, t_map **maps)
 {
-	count_lines(dafile);
-	(*maps)->map = (char **) malloc (sizeof(char *) * dafile->count_lines);
-	if (!(*maps)->map)
-		why_exit("map ** not allocated\n", FAILED);
-	make_map(*maps, *dafile);
+	count_lines(dafile, maps);
+	make_map(*maps, dafile);
 	copy_map(*maps, *dafile);
 	check_map(**maps, *dafile);
 	check_elements(**maps, *dafile);
@@ -51,29 +49,31 @@ void	correct_map(t_file *dafile, t_map **maps)
 	return ;
 }
 
-void	count_lines(t_file *dafile)
+int	count_lines(t_file *dafile, t_map **maps)
 {
 	dafile->count_lines = 0;
 	dafile->helper = 0;
 	dafile->total_count = 0;
-	dafile->fd = open_fd(dafile->file_name);
+	dafile->fd = open((const char *) dafile->file_name, O_RDONLY);
+	if (dafile->fd == -1)
+		return (free(dafile->file_name), free(*maps), why_exit("fd failed\n", FAILED), FAILED);
 	while (TRUE)
 	{
-		if (count_lines_p2(dafile) == FALSE)
+		if (count_lines_p2(dafile, maps) == FALSE)
 			break ;
 	}
 	if (dafile->count_lines < 3 || dafile->count_lines > 35)
-		why_exit("lines are less or too long\n", FAILED);
+		return (free(dafile->file_name), free(*maps), why_exit("lines are less or too long\n", FAILED), FAILED);
 	if (dafile->total_count < 12)
-		why_exit("map is too small\n", FAILED);
-	close (dafile->fd);
+		return (free(dafile->file_name), free(*maps), why_exit("map is too small\n", FAILED), FAILED);
+	return (close (dafile->fd), SUCCEFULL);
 }
 
-int	count_lines_p2(t_file *dafile)
+int	count_lines_p2(t_file *dafile, t_map **maps)
 {
 	dafile->current_gnl = get_next_line(dafile->fd);
 	if (!dafile->current_gnl && dafile->helper == 0)
-		why_exit("get next line failed to read\n", FAILED);
+		return (free(dafile->file_name), free(*maps), why_exit("get next line failed to read\n", FAILED), FAILED);
 	if (!dafile->current_gnl && dafile->helper)
 		return (FALSE);
 	dafile->current_gnl = remove_nl(dafile->current_gnl);
@@ -81,20 +81,20 @@ int	count_lines_p2(t_file *dafile)
 	if (dafile->count_lines == FALSE)
 		dafile->line_chars = mystrlen(dafile->current_gnl);
 	if (dafile->line_chars < 3 || dafile->count_lines > 64)
-		why_exit("line is less or too long\n", FAILED);
+		return (free(dafile->file_name), free(*maps), why_exit("line is less or too long\n", FAILED), FAILED);
 	else
-		check_lines(dafile->current_gnl, dafile->line_chars);
+		check_lines(dafile->current_gnl, dafile->line_chars, maps, dafile->file_name);
 	dafile->total_count += dafile->line_chars;
 	dafile->count_lines ++;
 	return (TRUE);
 }
 
-void	check_lines(char *str, int first_count)
+int	check_lines(char *str, int first_count, t_map **maps, char *filename)
 {
 	int	second_count;
 
 	second_count = mystrlen(str);
 	if (first_count == second_count)
-		return ;
-	why_exit("lines arent equal\n", FAILED);
+		return (TRUE);
+	return (free(filename), free(*maps), why_exit("lines arent equal\n", FAILED), FAILED);
 }

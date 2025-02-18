@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:29:41 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:44:16 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:27:55 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ char	*remove_nl(char *current_gnl)
 
 int	map_symbols(char symbol)
 {
-	if (symbol == '1')
+	if (symbol == WALL)
 		return (SUCCEFULL);
-	if (symbol == '0')
+	if (symbol == EMPTY)
 		return (SUCCEFULL);
-	if (symbol == 'P')
+	if (symbol == PLAYER)
 		return (SUCCEFULL);
-	if (symbol == 'C')
+	if (symbol == COLLECT)
 		return (SUCCEFULL);
-	if (symbol == 'E')
+	if (symbol == EXIT)
 		return (SUCCEFULL);
-	if (symbol == 'N')
+	if (symbol == ENEMY)
 		return (SUCCEFULL);
 	return (FAILED);
 }
