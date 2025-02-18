@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 20:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:27:55 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:38:40 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ void	set_up(t_game	*game, t_file dafile)
 			"picss/coin.xpm", &game->img_width, &game->img_height);
 	game->exit_img = mlx_xpm_file_to_image(game->mlx,
 			"picss/exit.xpm", &game->img_width, &game->img_height);
+	game->enemy_img = mlx_xpm_file_to_image(game->mlx,
+			"picss/enemy.xpm", &game->img_width, &game->img_height);
+	game->enemy2_img = mlx_xpm_file_to_image(game->mlx,
+			"picss/enemy2.xpm", &game->img_width, &game->img_height);
 	if (game->wall_img == NULL || game->player_img == NULL
 		|| game->empty_img == NULL || game->coin_img == NULL
-		|| game->exit_img == NULL)
+		|| game->enemy_img == NULL || game->enemy2_img == NULL || game->exit_img == NULL)
 		why_exit ("image load failed\n", FAILED);
 	game->win = mlx_new_window(game->mlx, dafile.line_chars * WIN_RULE,
 			dafile.count_lines * WIN_RULE, "So_Long");
@@ -34,13 +38,16 @@ void	set_up(t_game	*game, t_file dafile)
 		why_exit("win failed \n", FAILED);
 	find_player(game);
 	calculate_collect(game);
-	game->move = 0;
 }
 
-void	find_player(t_game *game)
+int	find_player(t_game *game)
 {
 	t_indexes	index;
 
+	game->count_move = (int *) malloc (sizeof(int));
+	game->enemy = (int *) malloc (sizeof(int));
+	if (!game->count_move || !game->enemy)
+		return (free_mlx(game), why_exit("c.move/enemy mlc fail\n", FAILED), FAILED);
 	index.i = 0;
 	while (index.i < game->count_lines)
 	{
@@ -51,12 +58,13 @@ void	find_player(t_game *game)
 			{
 				game->player_posx = index.j;
 				game->player_posy = index.i;
-				return ;
+				return (SUCCEFULL);
 			}
 			index.j ++;
 		}
 		index.i ++;
 	}
+	return (SUCCEFULL);
 }
 
 void	calculate_collect(t_game *game)
@@ -75,5 +83,14 @@ void	calculate_collect(t_game *game)
 			index.j ++;
 		}
 		index.i ++;
+	}
+	game->enemy = FALSE;
+	
+	*game->count_move = 0;
+	game->move = myitoa(*game->count_move);
+	if (!game->move)
+	{
+		free_mlx(game);
+		why_exit("moves allocation failed\n", FAILED);
 	}
 }

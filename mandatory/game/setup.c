@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 20:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 20:24:23 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/17 22:46:22 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_up(t_game	*game, t_file dafile)
 		why_exit("win failed \n", FAILED);
 	find_player(game);
 	calculate_collect(game);
-	game->move = 0;
+	game->move = 1;
 }
 
 void	find_player(t_game *game)

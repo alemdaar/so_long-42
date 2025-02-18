@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:17 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 21:36:07 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/17 22:38:13 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 
 	if (map_name(input_name) == FALSE)
 		why_exit("map name isnt correct\n", FAILED);
-	path = "srcs/maps/";
+	path = "mandatory/maps/";
 	index.i = 0;
 	index.k = 0;
 	dafile->file_name = malloc (sizeof(char) * (15 + mystrlen(input_name) + 1));

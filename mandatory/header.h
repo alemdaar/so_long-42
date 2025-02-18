@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:25:20 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:55:54 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ void	set_up(t_game	*game, t_file dafile);
 void	find_player(t_game *game);
 void	calculate_collect(t_game *game);
 // draw map
-void	put_img(t_game game, void *img, int x, int y);
 void	draw_map(t_game game);
 void	moveplayer(t_game *game, int x, int y);
 int		last_move(t_game *game, int x, int y);

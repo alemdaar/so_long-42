@@ -6,13 +6,13 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:51:18 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:54:03 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header_bonus.h"
 
-void	check_elements(t_map maps, t_file dafile, t_enemy *enemy)
+void	check_elements(t_map maps, t_file dafile)
 {
 	t_indexes	index;
 
@@ -26,42 +26,37 @@ void	check_elements(t_map maps, t_file dafile, t_enemy *enemy)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.map[index.i][index.j] == COLLECT)
+			if (maps.map[index.i][index.j] == 'C')
 				index.c ++;
-			else if (maps.map[index.i][index.j] == PLAYER)
+			else if (maps.map[index.i][index.j] == 'P')
 				index.p ++;
-			else if (maps.map[index.i][index.j] == EXIT)
+			else if (maps.map[index.i][index.j] == 'E')
 				index.e ++;
-			else if (maps.map[index.i][index.j] == ENEMY)
-				handle_enemy(enemy, maps, &index);
+			else if (maps.map[index.i][index.j] == 'N')
+				index.n ++;
 			index.j ++;
 		}
 		index.i ++;
 	}
+	printf ("c : %d\n", index.c);
+	printf ("p : %d\n", index.p);
+	printf ("e : %d\n", index.e);
+	printf ("n : %d\n", index.n);
 	check_elements2(index, maps, dafile);
 }
 
 void	check_elements2(t_indexes index, t_map maps, t_file dafile)
 {
-	int	r;
-
-	r = FALSE;
 	if (index.c < 1)
-	{
 		myputstr("no collects\n");
-		r = TRUE;
-	}
 	if (index.e != 1)
-	{
 		myputstr("exit doesnt equal 1\n");
-		r = TRUE;
-	}
 	if (index.p != 1)
-	{
 		myputstr("player doesnt equal 1\n");
-		r = TRUE;
-	}
-	if (r == TRUE)
+	if (index.n < 1)
+		myputstr("there is no enemy !\n");
+	if (index.c < 1 || index.e != 1 || index.p != 1
+		|| index.n < 1)
 	{
 		free_maps(&maps, dafile.count_lines);
 		free_maps_c(&maps, dafile.count_lines);
@@ -95,15 +90,16 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex)
 {
 	if (daline < 1 || daline > dafile.line_chars || daindex < 1
 		|| daindex > dafile.line_chars
-		|| maps.tmp_map[daline][daindex] == '1')
+		|| maps.tmp_map[daline][daindex] == WALL
+		|| maps.tmp_map[daline][daindex] == ENEMY)
 		return ;
-	if (maps.tmp_map[daline][daindex] == 'E')
+	if (maps.tmp_map[daline][daindex] == EXIT)
 	{
 		maps.tmp_map[daline][daindex] = 'X';
 		return ;
 	}
 	if (maps.tmp_map[daline][daindex] != 'X')
-		maps.tmp_map[daline][daindex] = '1';
+		maps.tmp_map[daline][daindex] = WALL;
 	flood_fill(maps, dafile, daline + 1, daindex);
 	flood_fill(maps, dafile, daline - 1, daindex);
 	flood_fill(maps, dafile, daline, daindex + 1);

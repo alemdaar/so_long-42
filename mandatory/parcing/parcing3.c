@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:54:38 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/17 22:30:51 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	check_elements(t_map maps, t_file dafile)
 		}
 		index.i ++;
 	}
+	
 	check_elements2(index, maps, dafile);
 }
 

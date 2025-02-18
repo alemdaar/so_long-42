@@ -14,7 +14,7 @@ SRC_BONUS = bonus/main_bonus.c bonus/parcing/parcing1_bonus.c bonus/parcing/parc
 	bonus/parcing/parcing3_bonus.c bonus/parcing/tools_bonus.c bonus/parcing/map_name_bonus.c \
 	bonus/parcing/free_bonus.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 	bonus/game/draw_map_bonus.c bonus/game/setup_bonus.c \
-	bonus/display/display_bonus.c
+	bonus/display/display_bonus.c bonus/display/itoa.c
 
 OBJ = ${SRC:.c=.o}
 

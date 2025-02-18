@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 22:46:52 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:42:19 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <mlx.h>
+# include <stdio.h>
 # include "../get_next_line/get_next_line.h"
 // RULES
 # define TRUE 1
@@ -40,7 +41,7 @@
 # define COLLECT 67
 # define EXIT 69
 # define PLAYER 80
-# define ENEMY 78
+# define ENEMY 7
 // EXIT_KEY
 # define ESC_KEY 53
 
@@ -79,6 +80,8 @@ typedef struct game {
 	void	*player_img;
 	void	*coin_img;
 	void	*exit_img;
+	void	*enemy_img;
+	void	*enemy2_img;
 	int		img_width;
 	int		img_height;
 	int		player_posx;
@@ -86,15 +89,10 @@ typedef struct game {
 	char	**map;
 	int		count_lines;
 	int		collects;
-	int		move;
+	char	*move;
+	int		*count_move;
+	int		*enemy;
 }	t_game;
-
-typedef struct enemy {
-	int	*pos_x;
-	int	*pos_y;
-	int	count;
-	
-}	t_enemy;
 
 // parcing part
 // parcing1
@@ -133,18 +131,21 @@ void	why_exit(char *str, int operation);
 // game part
 // setup
 void	set_up(t_game	*game, t_file dafile);
-void	find_player(t_game *game);
+int		find_player(t_game *game);
 void	calculate_collect(t_game *game);
 // draw map
-void	put_img(t_game game, void *img, int x, int y);
-void	draw_map(t_game game);
+void	draw_map(t_game *game);
 void	moveplayer(t_game *game, int x, int y);
 int		last_move(t_game *game, int x, int y);
 // display
 void	myputchar(char c);
 void	myputstr(char *str);
-void	myputnbr(int n);
+char	*change_str(char *str, int nb);
+char	*myitoa(int n);
+// itoa
+char	*myitoa(int n);
 // main
 int		close_window(t_game *game);
+
 
 #endif
