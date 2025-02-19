@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 19:04:53 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:14:52 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,19 @@ int		correct_map_file(char *input_name, t_map **maps, t_file *dafile);
 void	correct_map(t_file *dafile, t_map **maps);
 int		count_lines(t_file *dafile, t_map **maps);
 int		count_lines_p2(t_file *dafile, t_map **maps);
-int		check_lines(char *str, int first_count, t_map **maps);
+int		check_lines(char *str, int first_count, t_map **maps, char *filename);
 // parcing2
-int		make_map(t_map *maps, t_file dafile);
-void	copy_map(t_map *maps, t_file dafile);
-void	check_map(t_map maps, t_file dafile);
+int		make_map(t_map *maps, t_file *dafile);
+int		copy_map(t_map *maps, t_file dafile);
+int		check_map(t_map *maps, t_file dafile);
 int		line_is_1(char *line);
-void	checkcen(char *line, int count, t_map maps, t_file dafile);
+int		checkcen(char *line, int count, t_map *maps, t_file dafile);
 // parcing3
-void	check_elements(t_map maps, t_file dafile);
-void	check_elements2(t_indexes index, t_map maps, t_file dafile);
+int		check_elements(t_map *maps, t_file dafile);
+int		check_elements2(t_indexes index, t_map *maps, t_file dafile);
 void	fill_map(t_map maps, t_file dafile);
 void	flood_fill(t_map maps, t_file dafile, int daline, int daindex);
-void	can_reach(t_map maps, t_file dafile);
+int		can_reach(t_map *maps, t_file dafile);
 // map name
 int		map_name(char *input_name);
 void	find_extention(char *str, char *word);
@@ -119,12 +119,13 @@ void	fill_copy(t_map *maps, t_indexes *index);
 // free
 void	free_maps(t_map *maps, int last);
 void	free_maps_c(t_map *maps, int last);
+void	free_gmap(t_game *game, int last);
 void	free_mlx(t_game *game);
 void	why_exit(char *str, int operation);
 
 // game part
 // setup
-void	set_up(t_game	*game, t_file dafile);
+int		set_up(t_game	*game, t_file dafile);
 void	find_player(t_game *game);
 void	calculate_collect(t_game *game);
 // draw map

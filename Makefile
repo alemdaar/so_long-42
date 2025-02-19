@@ -2,7 +2,7 @@ NAME = so_long
 
 NAME_BONUS = so_long_bonus
 
-CC = cc -g
+CC = cc -fsanitize=address -g
 
 
 SRC = mandatory/main.c mandatory/parcing/parcing1.c mandatory/parcing/parcing2.c \

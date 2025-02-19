@@ -6,16 +6,17 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 12:27:55 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:14:10 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header.h"
 
-void	check_elements(t_map maps, t_file dafile)
+int		check_elements(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
+	// * map && maps->map && maps->map[index.i] && maps->tmp_map && maps->tmp_map[index.i]
 	index.i = 0;
 	index.c = 0;
 	index.p = 0;
@@ -25,11 +26,11 @@ void	check_elements(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.map[index.i][index.j] == COLLECT)
+			if (maps->map[index.i][index.j] == COLLECT)
 				index.c ++;
-			else if (maps.map[index.i][index.j] == PLAYER)
+			else if (maps->map[index.i][index.j] == PLAYER)
 				index.p ++;
-			else if (maps.map[index.i][index.j] == EXIT)
+			else if (maps->map[index.i][index.j] == EXIT)
 				index.e ++;
 			index.j ++;
 		}
@@ -37,12 +38,14 @@ void	check_elements(t_map maps, t_file dafile)
 	}
 	
 	check_elements2(index, maps, dafile);
+	return (SUCCEFULL);
 }
 
-void	check_elements2(t_indexes index, t_map maps, t_file dafile)
+int	check_elements2(t_indexes index, t_map *maps, t_file dafile)
 {
 	int	r;
 
+	// * map && maps->map && maps->map[index.i] && maps->tmp_map && maps->tmp_map[index.i]
 	r = FALSE;
 	if (index.c < 1)
 	{
@@ -59,13 +62,10 @@ void	check_elements2(t_indexes index, t_map maps, t_file dafile)
 		myputstr("player doesnt equal 1\n");
 		r = TRUE;
 	}
+	// * map && maps->map && maps->map[index.i] && maps->tmp_map && maps->tmp_map[index.i]
 	if (r == TRUE)
-	{
-		free_maps(&maps, dafile.count_lines);
-		free_maps_c(&maps, dafile.count_lines);
-		exit(FAILED);
-	}
-	return ;
+		return (free_maps_c(maps, dafile.count_lines), free_maps(maps, dafile.count_lines), free(maps), exit(FAILED), FAILED);
+	return (SUCCEFULL);
 }
 
 void	fill_map(t_map maps, t_file dafile)
@@ -109,25 +109,25 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex)
 	return ;
 }
 
-void	can_reach(t_map maps, t_file dafile)
+int	can_reach(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
+	// * map && maps->map && maps->map[index.i] && maps->tmp_map && maps->tmp_map[index.i]
 	index.i = 0;
 	while (index.i < dafile.count_lines)
 	{
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.tmp_map[index.i][index.j] == COLLECT
-				|| maps.tmp_map[index.i][index.j] == EXIT)
+			if (maps->tmp_map[index.i][index.j] == COLLECT
+				|| maps->tmp_map[index.i][index.j] == EXIT)
 			{
-				free_maps(&maps, dafile.count_lines);
-				free_maps_c(&maps, dafile.count_lines);
-				why_exit("E or C cant reach them\n", FAILED);
+				return (free_maps_c(maps, dafile.count_lines), free_maps(maps, dafile.count_lines), free(maps), why_exit("E or C cant reach them\n", FAILED), FAILED);
 			}
 			index.j ++;
 		}
 		index.i ++;
 	}
+	return (SUCCEFULL);
 }

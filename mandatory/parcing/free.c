@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:41:05 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 20:01:29 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:32:50 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,37 @@ void	free_maps_c(t_map *maps, int last)
 	maps->tmp_map = NULL;
 }
 
-void	free_mlx(t_game *game)
+void	free_gmap(t_game *game, int last)
 {
-	int	i;
+	t_indexes	index;
 
-	i = 0;
-	while (i < game->count_lines)
+	index.i = 0;
+	if (!game->map || !game->map[index.i])
+		return ;
+	while (index.i < last)
 	{
-		free(game->map[i]);
-		game->map[i++] = NULL;
+		free(game->map[index.i]);
+		game->map[index.i] = NULL;
+		index.i ++;
 	}
 	free(game->map);
 	game->map = NULL;
-	mlx_destroy_image(game->mlx, game->wall_img);
-	mlx_destroy_image(game->mlx, game->coin_img);
-	mlx_destroy_image(game->mlx, game->player_img);
-	mlx_destroy_image(game->mlx, game->empty_img);
-	mlx_destroy_image(game->mlx, game->exit_img);
-	mlx_destroy_window(game->mlx, game->win);
+}
+
+void	free_mlx(t_game *game)
+{
+	if (game->wall_img)
+		mlx_destroy_image(game->mlx, game->wall_img);
+	if (game->coin_img)
+		mlx_destroy_image(game->mlx, game->coin_img);
+	if (game->player_img)
+		mlx_destroy_image(game->mlx, game->player_img);
+	if (game->empty_img)
+		mlx_destroy_image(game->mlx, game->empty_img);
+	if (game->exit_img)
+		mlx_destroy_image(game->mlx, game->exit_img);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
 	free(game->mlx);
 }
 
