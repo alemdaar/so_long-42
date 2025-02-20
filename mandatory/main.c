@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/19 20:42:53 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:11:20 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,18 @@ static void protect_it(t_game *game)
 	game->exit_img = NULL;
 }
 
+// void leak()
+// {
+// 	system ("leaks so_long");
+// }
+
 int	main(int ac, char **av)
 {
 	t_file		dafile;
 	t_map		*maps;
 	t_game		game;
 
+	// atexit(leak);
 	if (ac != 2)
 		why_exit("dakhal map mea prog !\n", FAILED);
 	maps = (t_map *) malloc (sizeof(t_map));
@@ -71,7 +77,6 @@ int	main(int ac, char **av)
 	//game->map && game->map[index.i] && mlx
 	set_up(&game, dafile);
 	//game->map && game->map[index.i] && mlx && imgs && win
-	// printf ("......\n");
 	draw_map(game);
 	mlx_hook(game.win, 2, 0, key_hook, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);

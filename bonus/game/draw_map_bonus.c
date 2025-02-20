@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:24:08 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 16:31:28 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:10:50 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ void	draw_map(t_game *game)
 		}
 		index.i++;
 	}
-	printf ("1\n");
 	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, "move : ");
 	mlx_string_put(game->mlx, game->win, 100, 10, 0xFFFFFF, game->move);
-	printf ("2\n");
 }
 
 int	last_move(t_game *game, int x, int y)

@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:41:05 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/19 20:32:50 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:30:46 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	free_mlx(t_game *game)
 		mlx_destroy_image(game->mlx, game->exit_img);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
-	free(game->mlx);
+	// free(game->mlx);
 }
 
 void	why_exit(char *str, int operation)

@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:17 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/19 17:08:02 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:11:25 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 	char		*path;
 	t_indexes	index;
 
-	printf ("name : %s\n", input_name);
 	// * map
 	if (map_name(input_name) == FALSE)
 		return (free(*maps), why_exit("map name isnt correct\n", FAILED), FAILED);

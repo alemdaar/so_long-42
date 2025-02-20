@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 18:18:57 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:10:44 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ int	main(int ac, char **av)
 	if (!game.mlx)
 		return (free_mlx(&game), why_exit("mlx allocation failed !\n", FAILED), FAILED);
 	set_up(&game, dafile);
-	// printf ("....\n");
 	draw_map(&game);
-	printf (".....\n");
 	mlx_hook(game.win, 2, 0, key_hook, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);

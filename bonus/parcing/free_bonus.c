@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:41:05 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 16:36:21 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:11:14 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	free_maps_c(t_map *maps, int last)
 
 static	void	free_mlx2(t_game *game)
 {
-	printf ("free\n");
 	if (game->move)
 		free(game->move);
 }

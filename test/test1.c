@@ -1,7 +1,11 @@
-#include <mlx.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-int	main(void)
+int main ()
 {
-	
+    char *str;
+
+	str = NULL;
+    printf ("str : %p", str);
+    free(str);
 }

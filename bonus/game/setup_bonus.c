@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 20:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 16:40:00 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:11:04 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@ void set_move(t_game *game)
 	}
 	*game->enemy = 0;
 	*game->count_move = 0;
-	printf ("jaja\n");
-
 	if(game->move)
 		free(game->move);
 	game->move = myitoa(*game->count_move);
-	printf ("jaja2\n");
 	if (!game->move)
 	{
 		free_mlx(game);
