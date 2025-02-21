@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 16:29:41 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 12:27:55 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:24:15 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/20 16:41:45 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	open_fd(char *file_name)
 	int	fd;
 
 	fd = open((const char *) file_name, O_RDONLY);
-	if (fd == -1)
-		why_exit("fd failed\n", FAILED);
 	return (fd);
 }
 
@@ -39,6 +37,8 @@ char	*remove_nl(char *current_gnl)
 
 	i = 0;
 	new = (char *) malloc (sizeof (char) * mystrlen(current_gnl) + 1);
+	if (!new)
+		return (free(current_gnl), NULL);
 	while (current_gnl[i])
 	{
 		new[i] = current_gnl[i];

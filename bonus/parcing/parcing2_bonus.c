@@ -5,69 +5,47 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 17:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 12:27:13 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:23:54 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/20 16:24:00 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header_bonus.h"
 
-int	make_map(t_map *maps, t_file dafile)
+int	make_map(t_map *maps, t_file *dafile)
 {
 	t_indexes	index;
 
 	index.c = FALSE;
-	dafile.fd = open_fd(dafile.file_name);
+	dafile->fd = open_fd(dafile->file_name);
 	index.i = 0;
-	while (index.i < dafile.count_lines)
-	{
-		maps->map[index.i] = malloc (dafile.line_chars + 1);
-		if (!maps->map[index.i])
-		{
-			free_maps(maps, index.i);
-			why_exit("map line not allocated \n", FAILED);
-		}
-		maps->map[index.i] = get_next_line(dafile.fd);
-		if (!maps->map[index.i] && index.c == FALSE)
-		{
-			free_maps(maps, index.i);
-			why_exit("get next line failed to read\n", FAILED);
-		}
-		index.c = TRUE;
-		maps->map[index.i] = remove_nl(maps->map[index.i]);
-		index.i ++;
-	}
-	return (close (dafile.fd), free (dafile.file_name), SUCCEFULL);
+	if (dafile->fd == -1)
+		return (free(dafile->file_name), free(maps),
+			why_exit("fd failed\n", FAILED), FAILED);
+	maps->map = (char **) malloc (sizeof(char *) * dafile->count_lines);
+	if (!maps->map)
+		return (free(dafile->file_name),
+			free(maps), why_exit("map ** not allocated\n", FAILED), FAILED);
+	while (index.i < dafile->count_lines)
+		make_map2(maps, dafile, &index);
+	return (close (dafile->fd), free (dafile->file_name), SUCCEFULL);
 }
 
-void	copy_map(t_map *maps, t_file dafile)
+int	copy_map(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
 	maps->tmp_map = (char **) malloc (sizeof(char *) * dafile.count_lines);
 	if (!maps->tmp_map)
-	{
-		free_maps(maps, dafile.count_lines);
-		why_exit("tmp map not allocated \n", FAILED);
-	}
+		return (free_maps(maps, dafile.count_lines), free(maps),
+			why_exit("tmp map not allocated \n", FAILED), FAILED);
 	index.i = 0;
 	while (index.i < dafile.count_lines)
-	{
-		maps->tmp_map[index.i] = malloc (dafile.line_chars + 1);
-		if (!maps->tmp_map[index.i])
-		{
-			free_maps_c(maps, index.i);
-			free_maps(maps, dafile.count_lines);
-			why_exit("tmp map line not allocated \n", FAILED);
-		}
-		index.j = 0;
-		while (index.j < dafile.line_chars)
-			fill_copy(maps, &index);
-		index.i ++;
-	}
+		copy_map2(maps, dafile, &index);
+	return (SUCCEFULL);
 }
 
-void	check_map(t_map maps, t_file dafile)
+void	check_map(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
@@ -76,17 +54,19 @@ void	check_map(t_map maps, t_file dafile)
 	{
 		if (index.i == 0 || index.i == dafile.count_lines - 1)
 		{
-			if (line_is_1(maps.map[index.i]) == FAILED)
+			if (line_is_1(maps->map[index.i]) == FAILED)
 			{
-				free_maps(&maps, dafile.count_lines);
-				free_maps_c(&maps, dafile.count_lines);
+				free_maps_c(maps, dafile.count_lines);
+				free_maps(maps, dafile.count_lines);
+				free(maps);
 				why_exit("first or last arent correct walls \n", FAILED);
 			}
 		}
 		else
-			checkcen(maps.map[index.i], dafile.line_chars, maps, dafile);
+			checkcen(maps->map[index.i], dafile.line_chars, maps, dafile);
 		index.i ++;
 	}
+	return ;
 }
 
 int	line_is_1(char *line)
@@ -103,7 +83,7 @@ int	line_is_1(char *line)
 	return (SUCCEFULL);
 }
 
-void	checkcen(char *line, int count, t_map maps, t_file dafile)
+int	checkcen(char *line, int count, t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
@@ -114,20 +94,14 @@ void	checkcen(char *line, int count, t_map maps, t_file dafile)
 		{
 			if (line[index.i] != WALL)
 			{
-				free_maps(&maps, dafile.count_lines);
-				free_maps_c(&maps, dafile.count_lines);
-				why_exit("center, 1 or last index != wall\n", FAILED);
+				free_maps_c(maps, dafile.count_lines);
+				return (free_maps(maps, dafile.count_lines), free(maps),
+					why_exit(" != wall\n", FAILED), FAILED);
 			}
 		}
 		else
-		{
-			if (map_symbols(line[index.i]) == FAILED)
-			{
-				free_maps(&maps, dafile.count_lines);
-				free_maps_c(&maps, dafile.count_lines);
-				why_exit("undefined symbol in the map\n", FAILED);
-			}
-		}
+			checkcen2(line, maps, dafile, &index);
 		index.i ++;
 	}
+	return (SUCCEFULL);
 }

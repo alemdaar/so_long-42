@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 15:10:28 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:24:08 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/21 13:42:02 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header_bonus.h"
 
-void	check_elements(t_map maps, t_file dafile)
+int	check_elements(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
@@ -26,23 +26,26 @@ void	check_elements(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.map[index.i][index.j] == COLLECT)
+			if (maps->map[index.i][index.j] == COLLECT)
 				index.c ++;
-			else if (maps.map[index.i][index.j] == PLAYER)
+			else if (maps->map[index.i][index.j] == PLAYER)
 				index.p ++;
-			else if (maps.map[index.i][index.j] == EXIT)
+			else if (maps->map[index.i][index.j] == EXIT)
 				index.e ++;
-			else if (maps.map[index.i][index.j] == ENEMY)
-				index.n ++;
+			else if (maps->map[index.i][index.j] == ENEMY)
+				index.n++;
 			index.j ++;
 		}
 		index.i ++;
 	}
-	check_elements2(index, maps, dafile);
+	return (check_elements2(index, maps, dafile), SUCCEFULL);
 }
 
-void	check_elements2(t_indexes index, t_map maps, t_file dafile)
+int	check_elements2(t_indexes index, t_map *maps, t_file dafile)
 {
+	int	r;
+
+	r = FALSE;
 	if (index.c < 1)
 		myputstr("no collects\n");
 	if (index.e != 1)
@@ -50,15 +53,15 @@ void	check_elements2(t_indexes index, t_map maps, t_file dafile)
 	if (index.p != 1)
 		myputstr("player doesnt equal 1\n");
 	if (index.n < 1)
-		myputstr("there is no enemy !\n");
-	if (index.c < 1 || index.e != 1 || index.p != 1
-		|| index.n < 1)
+		myputstr("no enemy \n");
+	if (index.c < 1 || index.e != 1
+		|| index.p != 1 || index.n < 1)
 	{
-		free_maps(&maps, dafile.count_lines);
-		free_maps_c(&maps, dafile.count_lines);
-		exit(FAILED);
+		free_maps_c(maps, dafile.count_lines);
+		return (free_maps(maps, dafile.count_lines),
+			free(maps), exit(FAILED), FAILED);
 	}
-	return ;
+	return (SUCCEFULL);
 }
 
 void	fill_map(t_map maps, t_file dafile)
@@ -84,10 +87,13 @@ void	fill_map(t_map maps, t_file dafile)
 
 void	flood_fill(t_map maps, t_file dafile, int daline, int daindex)
 {
-	if (daline < 1 || daline > dafile.line_chars || daindex < 1
-		|| daindex > dafile.line_chars
-		|| maps.tmp_map[daline][daindex] == WALL
-		|| maps.tmp_map[daline][daindex] == ENEMY)
+	if (daline < 1 || daline > dafile.count_lines)
+		return ;
+	if (daindex < 1 || daindex > dafile.line_chars)
+		return ;
+	if (maps.tmp_map[daline][daindex] == WALL)
+		return ;
+	if (maps.tmp_map[daline][daindex] == ENEMY)
 		return ;
 	if (maps.tmp_map[daline][daindex] == EXIT)
 	{
@@ -103,7 +109,7 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex)
 	return ;
 }
 
-void	can_reach(t_map maps, t_file dafile)
+int	can_reach(t_map *maps, t_file dafile)
 {
 	t_indexes	index;
 
@@ -113,15 +119,17 @@ void	can_reach(t_map maps, t_file dafile)
 		index.j = 0;
 		while (index.j < dafile.line_chars)
 		{
-			if (maps.tmp_map[index.i][index.j] == COLLECT
-				|| maps.tmp_map[index.i][index.j] == EXIT)
+			if (maps->tmp_map[index.i][index.j] == COLLECT
+				|| maps->tmp_map[index.i][index.j] == EXIT)
 			{
-				free_maps(&maps, dafile.count_lines);
-				free_maps_c(&maps, dafile.count_lines);
-				why_exit("E or C cant reach them\n", FAILED);
+				free_maps_c(maps, dafile.count_lines);
+				free_maps(maps, dafile.count_lines);
+				free(maps);
+				return (why_exit("E or C cant reach them\n", FAILED), FAILED);
 			}
 			index.j ++;
 		}
 		index.i ++;
 	}
+	return (SUCCEFULL);
 }

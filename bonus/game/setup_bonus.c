@@ -5,36 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 20:15:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/20 15:11:04 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:22:30 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/21 15:10:42 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header_bonus.h"
 
-void set_move(t_game *game)
-{
-	game->enemy = malloc (sizeof(int));
-	game->count_move = malloc (sizeof(int));
-	if (!game->enemy || !game->count_move)
-	{
-		free_mlx(game);
-		why_exit("enemy or count move mlc failed\n", FAILED);
-	}
-	*game->enemy = 0;
-	*game->count_move = 0;
-	if(game->move)
-		free(game->move);
-	game->move = myitoa(*game->count_move);
-	if (!game->move)
-	{
-		free_mlx(game);
-		why_exit("moves allocation failed\n", FAILED);
-	}
-	return ;
-}
-
-int	set_up(t_game	*game, t_file dafile)
+static	void	load_img(t_game *game, t_file dafile)
 {
 	game->wall_img = mlx_xpm_file_to_image(game->mlx,
 			"picss/wall.xpm", &game->img_width, &game->img_height);
@@ -52,19 +30,44 @@ int	set_up(t_game	*game, t_file dafile)
 			"picss/enemy2.xpm", &game->img_width, &game->img_height);
 	if (game->wall_img == NULL || game->player_img == NULL
 		|| game->empty_img == NULL || game->coin_img == NULL
-		|| game->enemy_img == NULL || game->enemy2_img == NULL || game->exit_img == NULL)
-		return (free_mlx(game) ,why_exit ("image load failed\n", FAILED), FAILED);
+		|| game->exit_img == NULL || game->enemy_img == NULL
+		|| game->enemy2_img == NULL)
+	{
+		free_gmap(game, dafile.count_lines);
+		free_mlx(game);
+		why_exit ("image load failed\n", FAILED);
+	}
+	return ;
+}
+
+int	set_up(t_game *game, t_file dafile)
+{
+	load_img(game, dafile);
 	game->win = mlx_new_window(game->mlx, dafile.line_chars * WIN_RULE,
 			dafile.count_lines * WIN_RULE, "So_Long");
 	if (game->win == NULL)
-		return (free_mlx(game), why_exit("win failed \n", FAILED), FAILED);
+	{
+		free_gmap(game, dafile.count_lines);
+		free_mlx(game);
+		return (why_exit ("win failed\n", FAILED), FAILED);
+	}
 	find_player(game);
 	calculate_collect(game);
-	set_move(game);
+	game->move = 0;
+	prepare_str(&game->move_str, game, dafile);
+	myitoa(game);
+	game->turn_enemy = (int *) malloc (sizeof(int));
+	if (!game->turn_enemy)
+	{
+		free_gmap(game, dafile.count_lines);
+		free_mlx(game);
+		return (why_exit ("turn enemy failed\n", FAILED), FAILED);
+	}
+	*game->turn_enemy = 0;
 	return (SUCCEFULL);
 }
 
-int	find_player(t_game *game)
+void	find_player(t_game *game)
 {
 	t_indexes	index;
 
@@ -76,15 +79,14 @@ int	find_player(t_game *game)
 		{
 			if (game->map[index.i][index.j] == PLAYER)
 			{
-				game->player_posx = index.j;
-				game->player_posy = index.i;
-				return (SUCCEFULL);
+				game->posx = index.j;
+				game->posy = index.i;
+				return ;
 			}
 			index.j ++;
 		}
 		index.i ++;
 	}
-	return (SUCCEFULL);
 }
 
 void	calculate_collect(t_game *game)

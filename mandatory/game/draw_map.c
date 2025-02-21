@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:24:08 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/17 18:47:00 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:09:39 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	draw_map(t_game game)
 
 void	moveplayer(t_game *game, int x, int y)
 {
-	if (game->map[game->player_posy + y][game->player_posx + x] == WALL)
+	if (game->map[game->posy + y][game->posx + x] == WALL)
 		return ;
-	if (game->map[game->player_posy + y][game->player_posx + x] == EXIT)
+	if (game->map[game->posy + y][game->posx + x] == EXIT)
 	{
 		if (game->collects > 0)
 			return ;
@@ -65,23 +65,22 @@ void	moveplayer(t_game *game, int x, int y)
 		myputchar('\n');
 		close_window(game);
 	}
-	if (game->map[game->player_posy + y][game->player_posx + x] == COLLECT)
+	if (game->map[game->posy + y][game->posx + x] == COLLECT)
 		game->collects --;
-	game->map[game->player_posy][game->player_posx] = EMPTY;
-	game->player_posx += x;
-	game->player_posy += y;
-	game->map[game->player_posy][game->player_posx] = PLAYER;
+	game->map[game->posy][game->posx] = EMPTY;
+	game->posx += x;
+	game->posy += y;
+	game->map[game->posy][game->posx] = PLAYER;
 	draw_map(*game);
 	myputstr("move : ");
 	myputnbr(game->move);
 	game->move ++;
 	myputchar('\n');
-	
 }
 
 int	last_move(t_game *game, int x, int y)
 {
-	if (game->map[game->player_posy + y][game->player_posx + x] == EXIT)
+	if (game->map[game->posy + y][game->posx + x] == EXIT)
 	{
 		if (game->collects == 0)
 			return (TRUE);

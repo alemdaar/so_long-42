@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/20 15:10:44 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:21:21 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/21 15:06:55 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int	close_window(t_game *game)
 {
+	free_gmap(game, game->count_lines);
 	free_mlx(game);
-	// while (1);
-	system("leaks so_long_bonus");
 	exit(SUCCEFULL);
 }
 
@@ -35,7 +34,7 @@ static int	key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-static void protect_it(t_game *game)
+static void	protect_it(t_game *game)
 {
 	game->mlx = NULL;
 	game->win = NULL;
@@ -46,9 +45,8 @@ static void protect_it(t_game *game)
 	game->exit_img = NULL;
 	game->enemy_img = NULL;
 	game->enemy2_img = NULL;
-	game->move = NULL;
-	game->count_move = NULL;
-	game->enemy = NULL;
+	game->move_str = NULL;
+	game->turn_enemy = NULL;
 }
 
 int	main(int ac, char **av)
@@ -64,16 +62,17 @@ int	main(int ac, char **av)
 		why_exit("map struct not allocated !\n", FAILED);
 	correct_map_file(av[1], &maps, &dafile);
 	game.map = maps->map;
+	free(maps);
 	game.count_lines = dafile.count_lines;
 	protect_it(&game);
 	game.mlx = mlx_init();
 	if (!game.mlx)
-		return (free_mlx(&game), why_exit("mlx allocation failed !\n", FAILED), FAILED);
+		return (free_gmap(&game, dafile.count_lines),
+			why_exit("mlx failed \n", FAILED), FAILED);
 	set_up(&game, dafile);
-	draw_map(&game);
+	draw_win(game);
 	mlx_hook(game.win, 2, 0, key_hook, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
 	mlx_loop(game.mlx);
-	
 	return (SUCCEFULL);
 }

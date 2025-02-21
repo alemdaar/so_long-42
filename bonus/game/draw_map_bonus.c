@@ -5,104 +5,96 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 13:24:08 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/20 15:10:50 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:22:13 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/21 15:09:36 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header_bonus.h"
 
-void	put_img(t_game *game, void *img, int x, int y)
+void	put_img(t_game game, void *img, int x, int y)
 {
 	int	a;
 	int	b;
 
 	a = WIN_RULE * x;
 	b = WIN_RULE * y;
-	mlx_put_image_to_window(game->mlx, game->win, img, a, b);
+	mlx_put_image_to_window(game.mlx, game.win, img, a, b);
 }
 
-void put_enemy(t_game *game, int x, int y)
+static	void	put_enemy(t_game *game, int x, int y)
 {
-	if (*game->enemy == FALSE)
-	{
-		put_img(game, game->enemy_img, x, y);
-		*game->enemy = TRUE;
-	}
-	if (*game->enemy == TRUE)
-	{
-		put_img(game, game->enemy_img, x, y);
-		*game->enemy = FALSE;
-	}
-	return ;
+	if (*game->turn_enemy == FALSE)
+		put_img(*game, game->enemy_img, x, y);
+	if (*game->turn_enemy == TRUE)
+		put_img(*game, game->enemy2_img, x, y);
+	if (*game->turn_enemy == FALSE)
+		*game->turn_enemy = 1;
+	else if (*game->turn_enemy == TRUE)
+		*game->turn_enemy = 0;
 }
 
-void	draw_map(t_game *game)
+void	draw_map(t_game game)
 {
 	t_indexes	index;
 
 	index.i = 0;
 	index.j = 0;
-	while (index.i < game->count_lines)
+	while (index.i < game.count_lines)
 	{
 		index.j = 0;
-		while (game->map[index.i][index.j])
+		while (game.map[index.i][index.j])
 		{
-			if (game->map[index.i][index.j] == WALL)
-				put_img(game, game->wall_img, index.j, index.i);
-			if (game->map[index.i][index.j] == EMPTY)
-				put_img(game, game->empty_img, index.j, index.i);
-			if (game->map[index.i][index.j] == PLAYER)
-				put_img(game, game->player_img, index.j, index.i);
-			if (game->map[index.i][index.j] == COLLECT)
-				put_img(game, game->coin_img, index.j, index.i);
-			if (game->map[index.i][index.j] == EXIT)
-				put_img(game, game->exit_img, index.j, index.i);
-			if (game->map[index.i][index.j] == ENEMY)
-				put_enemy(game, index.j, index.i);
+			if (game.map[index.i][index.j] == WALL)
+				put_img(game, game.wall_img, index.j, index.i);
+			if (game.map[index.i][index.j] == EMPTY)
+				put_img(game, game.empty_img, index.j, index.i);
+			if (game.map[index.i][index.j] == PLAYER)
+				put_img(game, game.player_img, index.j, index.i);
+			if (game.map[index.i][index.j] == COLLECT)
+				put_img(game, game.coin_img, index.j, index.i);
+			if (game.map[index.i][index.j] == EXIT)
+				put_img(game, game.exit_img, index.j, index.i);
+			if (game.map[index.i][index.j] == ENEMY)
+				put_enemy(&game, index.j, index.i);
 			index.j++;
 		}
 		index.i++;
 	}
-	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, "move : ");
-	mlx_string_put(game->mlx, game->win, 100, 10, 0xFFFFFF, game->move);
 }
 
-int	last_move(t_game *game, int x, int y)
+void	draw_win(t_game game)
 {
-	if (game->map[game->player_posy + y][game->player_posx + x] == EXIT)
-	{
-		if (game->collects == 0)
-			return (TRUE);
-	}
-	return (FALSE);
+	draw_map(game);
+	mlx_string_put(game.mlx, game.win, 5, 3, 0xFFFFFF, "move: ");
+	mlx_string_put(game.mlx, game.win, 60, 3, 0xFFFFFF, game.move_str);
 }
 
 void	moveplayer(t_game *game, int x, int y)
 {
-	if (game->map[game->player_posy + y][game->player_posx + x] == WALL)
+	if (game->map[game->posy + y][game->posx + x] == WALL)
 		return ;
-	if (game->map[game->player_posy + y][game->player_posx + x] == ENEMY)
-	{
-		myputstr("game over !\n");
-		close_window(game);
-	}
-	if (game->map[game->player_posy + y][game->player_posx + x] == EXIT)
+	if (game->map[game->posy + y][game->posx + x] == EXIT)
 	{
 		if (game->collects > 0)
 			return ;
 	}
 	if (last_move(game, x, y) == TRUE)
 	{
-		myputstr("you won !\n");
+		myputstr("you won\n");
 		close_window(game);
 	}
-	if (game->map[game->player_posy + y][game->player_posx + x] == COLLECT)
+	if (game->map[game->posy + y][game->posx + x] == ENEMY)
+	{
+		myputstr("you lost\n");
+		close_window(game);
+	}
+	if (game->map[game->posy + y][game->posx + x] == COLLECT)
 		game->collects --;
-	game->map[game->player_posy][game->player_posx] = EMPTY;
-	game->player_posx += x;
-	game->player_posy += y;
-	game->map[game->player_posy][game->player_posx] = PLAYER;
-	change_str(game);
-	draw_map(game);
+	game->map[game->posy][game->posx] = EMPTY;
+	game->posx += x;
+	game->posy += y;
+	game->map[game->posy][game->posx] = PLAYER;
+	myitoa(game);
+	draw_win(*game);
 }

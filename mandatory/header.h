@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/19 18:14:52 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:52:19 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <mlx.h>
-# include <stdio.h>
 # include "../get_next_line/get_next_line.h"
 // RULES
 # define TRUE 1
@@ -80,8 +79,8 @@ typedef struct game {
 	void	*exit_img;
 	int		img_width;
 	int		img_height;
-	int		player_posx;
-	int		player_posy;
+	int		posx;
+	int		posy;
 	char	**map;
 	int		count_lines;
 	int		collects;
@@ -98,7 +97,7 @@ int		check_lines(char *str, int first_count, t_map **maps, char *filename);
 // parcing2
 int		make_map(t_map *maps, t_file *dafile);
 int		copy_map(t_map *maps, t_file dafile);
-int		check_map(t_map *maps, t_file dafile);
+void	check_map(t_map *maps, t_file dafile);
 int		line_is_1(char *line);
 int		checkcen(char *line, int count, t_map *maps, t_file dafile);
 // parcing3
@@ -122,7 +121,10 @@ void	free_maps_c(t_map *maps, int last);
 void	free_gmap(t_game *game, int last);
 void	free_mlx(t_game *game);
 void	why_exit(char *str, int operation);
-
+// extra
+void	make_map2(t_map *maps, t_file *dafile, t_indexes *index);
+void	copy_map2(t_map *maps, t_file dafile, t_indexes *index);
+void	checkcen2(char *line, t_map *maps, t_file dafile, t_indexes *index);
 // game part
 // setup
 int		set_up(t_game	*game, t_file dafile);

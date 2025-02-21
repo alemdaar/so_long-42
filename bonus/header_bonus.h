@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/18 18:08:18 by oelhasso         ###   ########.fr       */
+/*   Created: 2025/02/20 16:24:25 by oelhasso          #+#    #+#             */
+/*   Updated: 2025/02/21 15:10:28 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <mlx.h>
-# include <stdio.h>
 # include "../get_next_line/get_next_line.h"
 // RULES
 # define TRUE 1
@@ -84,35 +83,35 @@ typedef struct game {
 	void	*enemy2_img;
 	int		img_width;
 	int		img_height;
-	int		player_posx;
-	int		player_posy;
+	int		posx;
+	int		posy;
 	char	**map;
 	int		count_lines;
 	int		collects;
-	char	*move;
-	int		*count_move;
-	int		*enemy;
+	int		move;
+	char	*move_str;
+	int		*turn_enemy;
 }	t_game;
 
 // parcing part
 // parcing1
 int		correct_map_file(char *input_name, t_map **maps, t_file *dafile);
 void	correct_map(t_file *dafile, t_map **maps);
-void	count_lines(t_file *dafile);
-int		count_lines_p2(t_file *dafile);
-void	check_lines(char *str, int first_count);
+int		count_lines(t_file *dafile, t_map **maps);
+int		count_lines_p2(t_file *dafile, t_map **maps);
+int		check_lines(char *str, int first_count, t_map **maps, char *filename);
 // parcing2
-int		make_map(t_map *maps, t_file dafile);
-void	copy_map(t_map *maps, t_file dafile);
-void	check_map(t_map maps, t_file dafile);
+int		make_map(t_map *maps, t_file *dafile);
+int		copy_map(t_map *maps, t_file dafile);
+void	check_map(t_map *maps, t_file dafile);
 int		line_is_1(char *line);
-void	checkcen(char *line, int count, t_map maps, t_file dafile);
+int		checkcen(char *line, int count, t_map *maps, t_file dafile);
 // parcing3
-void	check_elements(t_map maps, t_file dafile);
-void	check_elements2(t_indexes index, t_map maps, t_file dafile);
+int		check_elements(t_map *maps, t_file dafile);
+int		check_elements2(t_indexes index, t_map *maps, t_file dafile);
 void	fill_map(t_map maps, t_file dafile);
 void	flood_fill(t_map maps, t_file dafile, int daline, int daindex);
-void	can_reach(t_map maps, t_file dafile);
+int		can_reach(t_map *maps, t_file dafile);
 // map name
 int		map_name(char *input_name);
 void	find_extention(char *str, char *word);
@@ -125,27 +124,28 @@ void	fill_copy(t_map *maps, t_indexes *index);
 // free
 void	free_maps(t_map *maps, int last);
 void	free_maps_c(t_map *maps, int last);
+void	free_gmap(t_game *game, int last);
 void	free_mlx(t_game *game);
 void	why_exit(char *str, int operation);
-
+// extra
+void	make_map2(t_map *maps, t_file *dafile, t_indexes *index);
+void	copy_map2(t_map *maps, t_file dafile, t_indexes *index);
+void	checkcen2(char *line, t_map *maps, t_file dafile, t_indexes *index);
+int		last_move(t_game *game, int x, int y);
 // game part
 // setup
 int		set_up(t_game	*game, t_file dafile);
-int		find_player(t_game *game);
+void	find_player(t_game *game);
 void	calculate_collect(t_game *game);
 // draw map
-void	draw_map(t_game *game);
+void	draw_map(t_game game);
 void	moveplayer(t_game *game, int x, int y);
-int		last_move(t_game *game, int x, int y);
+void	draw_win(t_game game);
 // display
-void	myputchar(char c);
 void	myputstr(char *str);
-void	change_str(t_game *game);
-char	*myitoa(int n);
-// itoa
-char	*myitoa(int n);
+void	myitoa(t_game *game);
+void	prepare_str(char **str, t_game *game, t_file dafile);
 // main
 int		close_window(t_game *game);
-
 
 #endif

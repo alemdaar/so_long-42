@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:58:09 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/20 15:11:20 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:59:35 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	close_window(t_game *game)
 {
-	//game->map && game->map[index.i] && mlx && imgs && win
 	free_gmap(game, game->count_lines);
 	free_mlx(game);
 	exit(SUCCEFULL);
@@ -35,7 +34,7 @@ static int	key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-static void protect_it(t_game *game)
+static void	protect_it(t_game *game)
 {
 	game->mlx = NULL;
 	game->win = NULL;
@@ -46,37 +45,27 @@ static void protect_it(t_game *game)
 	game->exit_img = NULL;
 }
 
-// void leak()
-// {
-// 	system ("leaks so_long");
-// }
-
 int	main(int ac, char **av)
 {
 	t_file		dafile;
 	t_map		*maps;
 	t_game		game;
 
-	// atexit(leak);
 	if (ac != 2)
 		why_exit("dakhal map mea prog !\n", FAILED);
 	maps = (t_map *) malloc (sizeof(t_map));
 	if (!maps)
 		why_exit("map struct not allocated !\n", FAILED);
 	correct_map_file(av[1], &maps, &dafile);
-	// * map && maps->map && maps->map[index.i]
 	game.map = maps->map;
-	// free_maps(maps, dafile.count_lines);
 	free(maps);
-	//game->map && game->map[index.i]
 	game.count_lines = dafile.count_lines;
 	protect_it(&game);
 	game.mlx = mlx_init();
 	if (!game.mlx)
-		return (free_gmap(&game, dafile.count_lines), why_exit("mlx failed \n", FAILED), FAILED);
-	//game->map && game->map[index.i] && mlx
+		return (free_gmap(&game, dafile.count_lines),
+			why_exit("mlx failed \n", FAILED), FAILED);
 	set_up(&game, dafile);
-	//game->map && game->map[index.i] && mlx && imgs && win
 	draw_map(game);
 	mlx_hook(game.win, 2, 0, key_hook, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
