@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:24:25 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/21 15:10:28 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:05:16 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex);
 int		can_reach(t_map *maps, t_file dafile);
 // map name
 int		map_name(char *input_name);
-void	find_extention(char *str, char *word);
+int		find_extention(char *str, int ind, char *word);
 // tools
 int		mystrlen(char *str);
 int		open_fd(char *file_name);
@@ -138,6 +138,7 @@ int		set_up(t_game	*game, t_file dafile);
 void	find_player(t_game *game);
 void	calculate_collect(t_game *game);
 // draw map
+void	change_enemy(t_game *game);
 void	draw_map(t_game game);
 void	moveplayer(t_game *game, int x, int y);
 void	draw_win(t_game game);

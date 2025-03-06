@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:29 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/21 15:10:55 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/03 02:21:55 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex)
 	if (daindex < 1 || daindex > dafile.line_chars)
 		return ;
 	if (maps.tmp_map[daline][daindex] == WALL)
+		return ;
+	if (maps.tmp_map[daline][daindex] == 'X')
 		return ;
 	if (maps.tmp_map[daline][daindex] == EXIT)
 	{

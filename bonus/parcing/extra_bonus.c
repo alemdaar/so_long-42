@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:22:59 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/21 15:09:55 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:10:52 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,12 @@ int	last_move(t_game *game, int x, int y)
 			return (TRUE);
 	}
 	return (FALSE);
+}
+
+void	change_enemy(t_game *game)
+{
+	if (*game->turn_enemy == FALSE)
+		*game->turn_enemy = 1;
+	else if (*game->turn_enemy == TRUE)
+		*game->turn_enemy = 0;
 }

@@ -30,7 +30,7 @@ MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
 all: ${NAME}
 
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) ${CFLAGS} ${MLX_FLAGS} -o $(NAME)
+	@$(CC) ${CFLAGS} $(OBJ) ${MLX_FLAGS} -o $(NAME)
 	@echo "compiled successfully !"
 
 bonus : $(OBJ_BONUS)
@@ -43,4 +43,3 @@ clean :
 fclean : clean
 	@rm -f ${NAME} ${NAME_BONUS}
 re : fclean all
-rebonus: fclean bonus

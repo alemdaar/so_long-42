@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 16:33:35 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/16 20:40:59 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/03 02:11:01 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,35 @@ int	map_name(char *input_name)
 {
 	t_indexes	index;
 
-	if (mystrlen(input_name) <= mystrlen(".ber"))
+	if (mystrlen(input_name) < mystrlen(".ber"))
 		return (FALSE);
 	index.i = 0;
 	while (index.i < mystrlen(input_name))
 	{
 		if (input_name[index.i] == '.')
-			find_extention(input_name, ".ber");
+		{
+			index.c = find_extention(input_name, index.i, ".ber");
+			if (index.c == TRUE)
+				return (TRUE);
+		}
 		index.i++;
 	}
-	return (TRUE);
+	return (FALSE);
 }
 
-void	find_extention(char *str, char *word)
+int	find_extention(char *str, int ind, char *word)
 {
 	t_indexes	index;
 
-	index.i = 0;
-	while (str[index.i] != '.')
-		index.i ++;
 	index.j = 0;
-	while (str[index.i])
+	while (str[ind])
 	{
-		if (str[index.i] != word[index.j])
-			why_exit("map name isnt correct\n", FAILED);
-		index.i++;
+		if (str[ind] != word[index.j])
+			return (FAILED);
+		ind++;
 		index.j++;
 	}
-	if (str[index.i] != word[index.j])
-		why_exit("map name isnt correct\n", FAILED);
-	return ;
+	if (!str[ind] && !word[index.j])
+		return (TRUE);
+	return (FALSE);
 }

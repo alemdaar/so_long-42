@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:22:13 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/21 15:09:36 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:10:39 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,6 @@ static	void	put_enemy(t_game *game, int x, int y)
 		put_img(*game, game->enemy_img, x, y);
 	if (*game->turn_enemy == TRUE)
 		put_img(*game, game->enemy2_img, x, y);
-	if (*game->turn_enemy == FALSE)
-		*game->turn_enemy = 1;
-	else if (*game->turn_enemy == TRUE)
-		*game->turn_enemy = 0;
 }
 
 void	draw_map(t_game game)
@@ -66,6 +62,7 @@ void	draw_map(t_game game)
 void	draw_win(t_game game)
 {
 	draw_map(game);
+	change_enemy(&game);
 	mlx_string_put(game.mlx, game.win, 5, 3, 0xFFFFFF, "move: ");
 	mlx_string_put(game.mlx, game.win, 60, 3, 0xFFFFFF, game.move_str);
 }

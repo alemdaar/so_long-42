@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:15:17 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/20 22:05:42 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/03 02:11:19 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,19 @@ int	correct_map_file(char *input_name, t_map **maps, t_file *dafile)
 	t_indexes	index;
 
 	if (map_name(input_name) == FALSE)
-		return (free(*maps),
-			why_exit("map name isnt correct\n", FAILED), FAILED);
+	{
+		free(*maps);
+		why_exit("map name isnt correct\n", FAILED);
+	}
 	path = "maps/";
 	index.i = 0;
 	index.k = 0;
 	dafile->file_name = malloc (sizeof(char) * (15 + mystrlen(input_name) + 1));
 	if (!dafile->file_name)
+	{
+		free(*maps);
 		why_exit("file name didnt allocated !\n", FAILED);
+	}
 	while (path[index.i])
 		dafile->file_name[index.k++] = path[index.i++];
 	index.i = 0;
@@ -56,8 +61,11 @@ int	count_lines(t_file *dafile, t_map **maps)
 	dafile->total_count = 0;
 	dafile->fd = open((const char *) dafile->file_name, O_RDONLY);
 	if (dafile->fd == -1)
-		return (free(dafile->file_name), free(*maps),
-			why_exit("fd failed\n", FAILED), FAILED);
+	{
+		free(dafile->file_name);
+		free(*maps);
+		why_exit("fd failed\n", FAILED);
+	}
 	while (TRUE)
 	{
 		if (count_lines_p2(dafile, maps) == FALSE)

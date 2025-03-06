@@ -6,7 +6,7 @@
 /*   By: oelhasso <elhassounioussama2@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:38:52 by oelhasso          #+#    #+#             */
-/*   Updated: 2025/02/21 13:52:19 by oelhasso         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:14:08 by oelhasso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	flood_fill(t_map maps, t_file dafile, int daline, int daindex);
 int		can_reach(t_map *maps, t_file dafile);
 // map name
 int		map_name(char *input_name);
-void	find_extention(char *str, char *word);
+int		find_extention(char *str, int ind, char *word);
 // tools
 int		mystrlen(char *str);
 int		open_fd(char *file_name);
